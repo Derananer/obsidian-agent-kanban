@@ -1,0 +1,59 @@
+---
+description: Agent Kanban board — workflow and file conventions for AI agents interacting with the filesystem kanban board
+globs:
+alwaysApply: false
+---
+
+# Agent Kanban Board
+
+> Full reference: `skills/kanban.md`
+
+You are working with a **filesystem-based kanban board**.
+No API — read and write `.md` files directly.
+
+## Board structure
+
+```
+{BOARD_PATH}/
+├── epics/           ← epic definitions (MD files)
+├── 1-backlog/       ← columns sorted by numeric prefix
+├── 2-in-progress/
+├── 3-review/
+└── 4-done/
+```
+
+## Task file format
+
+```yaml
+---
+title: Task title
+priority: low | medium | high | critical
+tags: [tag1, tag2]
+created: 2026-04-05
+due: 2026-04-10
+agent: your-agent-name
+agent_status: busy | idle | inactive
+epic: "Epic Name"
+depends_on: [blocking-task-filename]
+---
+
+Task body. Append progress notes here.
+```
+
+## Core rules
+
+- **Claim task** → set `agent` + `agent_status: busy` in frontmatter, then `mv` to `2-in-progress/`
+- **Complete task** → `mv` file to done column, set `agent_status: idle`
+- **Create task** → write new `.md` with frontmatter to target column folder
+- **Dependency** → `depends_on: [filename-without-md]`; board shows 🔒 until dep is in done column
+- **Epic** → `epic: "Name"` must match `title` in a file under `epics/` (case-insensitive)
+- Never delete tasks — only move to done
+- Filename = `kebab-case` of title
+
+## Workflow
+
+```
+READ backlog → CLAIM task → WORK (append notes) → COMPLETE (mv to done)
+```
+
+If blocked: add `depends_on`, set `agent_status: idle`, pick another task.

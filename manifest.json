@@ -1,0 +1,10 @@
+{
+  "id": "agent-kanban",
+  "name": "Agent Kanban",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Filesystem-based kanban board. Folders as columns, MD files as tasks.",
+  "author": "you",
+  "authorUrl": "",
+  "isDesktopOnly": true
+}

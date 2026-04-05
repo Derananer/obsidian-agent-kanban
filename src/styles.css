@@ -1,0 +1,442 @@
+/* Agent Kanban Plugin Styles */
+
+.kanban-view-container {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Board = vertical stack of swimlane rows */
+.kanban-board {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
+  padding: 0;
+  min-width: max-content;
+}
+
+.kanban-empty-state {
+  color: var(--text-muted);
+  padding: 24px;
+}
+
+/* ── Header row ───────────────────────────────────────── */
+
+.kanban-header-row {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--background-primary);
+  border-bottom: 2px solid var(--background-modifier-border);
+}
+
+.kanban-col-header-label {
+  flex: 0 0 180px;
+  min-width: 180px;
+}
+
+.kanban-col-header {
+  flex: 0 0 260px;
+  width: 260px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+.kanban-col-header-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.88em;
+  color: var(--text-normal);
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanban-add-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1em;
+  line-height: 1;
+  padding: 0 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.kanban-add-btn:hover {
+  color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+}
+
+/* ── Epic rows ────────────────────────────────────────── */
+
+.kanban-epic-row {
+  display: flex;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.kanban-epic-row:last-child {
+  border-bottom: none;
+}
+
+/* Epic label — left column */
+.kanban-epic-label {
+  flex: 0 0 180px;
+  min-width: 180px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-right: 3px solid var(--epic-color, var(--background-modifier-border));
+  background: color-mix(in srgb, var(--epic-color, transparent) 6%, var(--background-primary));
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+
+.epic-label-name {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--epic-color, var(--text-normal));
+  word-break: break-word;
+  line-height: 1.2;
+}
+
+.epic-label-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Reuse .priority-dot but inline (not absolute) inside epic label */
+.epic-label-meta .priority-dot {
+  position: static;
+  flex-shrink: 0;
+}
+
+.epic-label-progress {
+  font-size: 0.72em;
+  font-weight: 600;
+  color: var(--epic-color, var(--text-muted));
+  background: color-mix(in srgb, var(--epic-color, transparent) 15%, var(--background-secondary));
+  border-radius: 8px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.epic-label-due {
+  font-size: 0.7em;
+  color: var(--text-muted);
+}
+
+.epic-label-due.overdue {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.epic-label-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.tag-pill-sm {
+  font-size: 0.62em;
+  padding: 0 5px;
+  opacity: 0.8;
+}
+
+.kanban-epic-label-none {
+  color: var(--text-faint);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+/* Collapse toggle */
+.epic-collapse-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  color: var(--epic-color, var(--text-muted));
+  opacity: 0.6;
+  transition: opacity 0.15s;
+  margin-bottom: 2px;
+}
+
+.epic-collapse-toggle:hover {
+  opacity: 1;
+}
+
+.epic-collapse-chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid currentColor;
+  transition: transform 0.2s ease;
+}
+
+/* Collapsed state */
+.kanban-epic-row.is-collapsed .epic-collapse-chevron {
+  transform: rotate(-90deg);
+}
+
+.kanban-epic-row.is-collapsed .kanban-epic-cell {
+  display: none;
+}
+
+.kanban-epic-row.is-collapsed .kanban-epic-label {
+  border-right-style: dashed;
+  opacity: 0.7;
+}
+
+/* Cell = intersection of epic row × column */
+.kanban-epic-cell {
+  flex: 0 0 260px;
+  width: 260px;
+  min-height: 80px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-left: 1px solid var(--background-modifier-border);
+  background: color-mix(in srgb, var(--epic-color, transparent) 4%, var(--background-primary));
+  transition: background 0.1s;
+}
+
+.kanban-epic-cell.drag-over {
+  background: var(--background-secondary-alt);
+  outline: 2px dashed var(--interactive-accent);
+  outline-offset: -2px;
+}
+
+/* ── Cards ────────────────────────────────────────────── */
+
+.kanban-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: grab;
+  position: relative;
+  transition: box-shadow 0.15s, opacity 0.15s, border-color 0.15s;
+}
+
+.kanban-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-color: var(--interactive-accent);
+}
+
+.kanban-card.is-dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+/* Priority left-border accent */
+.kanban-card.priority-critical { box-shadow: inset 3px 0 0 #e53935; }
+.kanban-card.priority-high     { box-shadow: inset 3px 0 0 #fb8c00; }
+.kanban-card.priority-medium   { box-shadow: inset 3px 0 0 #fdd835; }
+.kanban-card.priority-low      { box-shadow: inset 3px 0 0 var(--text-faint); }
+
+.kanban-card-title {
+  font-size: 0.88em;
+  font-weight: 500;
+  color: var(--text-normal);
+  margin-bottom: 5px;
+  word-break: break-word;
+  padding-right: 14px;
+}
+
+/* Priority dot */
+.priority-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  flex-shrink: 0;
+}
+
+.priority-dot.priority-critical {
+  background: #e53935;
+  box-shadow: 0 0 4px #e53935;
+}
+
+.priority-dot.priority-high {
+  background: #fb8c00;
+}
+
+.priority-dot.priority-medium {
+  background: #fdd835;
+}
+
+.priority-dot.priority-low {
+  background: var(--text-faint);
+}
+
+/* Tags */
+.kanban-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.tag-pill {
+  font-size: 0.68em;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-radius: 10px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+/* Due date */
+.due-date {
+  font-size: 0.72em;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.due-date.overdue {
+  color: #e53935;
+  font-weight: 600;
+}
+
+/* Agent badge */
+.agent-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-size: 0.72em;
+  color: var(--text-muted);
+}
+
+.agent-status-icon {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.agent-name {
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Blocked indicator */
+.blocker-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-size: 0.72em;
+  color: rgba(229, 57, 53, 0.85);
+  cursor: default;
+}
+
+.blocker-icon {
+  flex-shrink: 0;
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.blocker-list {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.missing-dep-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-size: 0.72em;
+  color: rgba(251, 140, 0, 0.9);
+  cursor: default;
+}
+
+/* Card with both blocked + missing — blocked wins visually */
+.kanban-card.is-blocked.has-missing-deps {
+  border-color: rgba(229, 57, 53, 0.4);
+  box-shadow: inset 2px 0 0 rgba(229, 57, 53, 0.6);
+}
+
+/* ── Modal form ───────────────────────────────────────── */
+
+.kanban-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.kanban-modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.kanban-modal-input {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 0.95em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kanban-modal-input:focus {
+  outline: none;
+  border-color: var(--interactive-accent);
+}
+
+.kanban-modal-textarea {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 0.9em;
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: var(--font-monospace);
+}
+
+.kanban-modal-textarea:focus {
+  outline: none;
+  border-color: var(--interactive-accent);
+}
+
+.kanban-modal-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}

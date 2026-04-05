@@ -1,0 +1,26 @@
+# Build output
+node_modules/
+main.js
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Logs & temp
+*.log
+npm-debug.log*
+.npm/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
