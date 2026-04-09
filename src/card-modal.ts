@@ -20,9 +20,13 @@ export class CardModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
 
+    let existing: TaskFrontmatter = {};
+    let existingContent = "";
+    if (this.config.mode === "edit") {
+      existing = this.config.card.frontmatter;
+      existingContent = this.config.card.content;
+    }
     const isEdit = this.config.mode === "edit";
-    const existing: TaskFrontmatter = isEdit ? this.config.card.frontmatter : {};
-    const existingContent = isEdit ? this.config.card.content : "";
 
     contentEl.createEl("h2", { text: isEdit ? "Edit task" : "New task" });
 
@@ -126,7 +130,7 @@ export class CardModal extends Modal {
       const content = descArea.value.trim();
 
       try {
-        if (isEdit) {
+        if (this.config.mode === "edit") {
           await this.service.updateTask(this.config.card.file, fm, content);
         } else {
           await this.service.createTask(this.config.column, fm, content);

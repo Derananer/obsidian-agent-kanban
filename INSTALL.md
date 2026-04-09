@@ -12,6 +12,7 @@
 ```bash
 git clone <repo-url> obsidian-agent-kanban
 cd obsidian-agent-kanban
+cd src
 npm install
 npm run build
 ```
