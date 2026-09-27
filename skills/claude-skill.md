@@ -25,6 +25,19 @@ When the user (or another agent) invokes `/kanban`, determine the intent from co
 | `mine` | Find all tasks where agent = current agent |
 | `blocked` | Find all tasks with depends_on not yet in done |
 
+## Board UI
+
+Click on a task opens its file, click on an epic name opens the epic file, right-click on a task → "Edit properties".
+
+## What a task is
+
+- A task is a **tangible increment of the epic** — when it is finished there is a result you can see, check or merge
+  (an endpoint works, a screen shows data, a push arrives). It is **not** a unit of subagent work and **not** a process phase.
+- No separate "analysis" / "review" / "implementation" tasks for the same thing — analysis, specs and plans live in docs and in the epic body.
+- At least one task per affected repository (different repos = different PRs = different increments).
+- For complex work the agent proposes the task breakdown (task → increment → repo → plan items it closes) in the spec, for approval together with it.
+- There is no review column: a task with an open PR stays in `2-in-progress` with `agent_status: idle`.
+
 ## Task file format
 
 ```yaml
