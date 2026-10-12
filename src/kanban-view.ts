@@ -1,4 +1,4 @@
-import { ItemView, WorkspaceLeaf, TFolder, TFile } from "obsidian";
+import { ItemView, WorkspaceLeaf, TFolder, TFile, Menu } from "obsidian";
 import AgentKanbanPlugin from "./main";
 import { BoardService } from "./board-service";
 import { CardModal } from "./card-modal";
@@ -128,7 +128,11 @@ export class KanbanView extends ItemView {
 
     if (epic) {
       // Name
-      label.createEl("div", { text: epic.name, cls: "epic-label-name" });
+      const nameEl = label.createEl("div", { text: epic.name, cls: "epic-label-name", title: "Open epic" });
+      nameEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.openFile(epic.file);
+      });
 
       // Meta row: priority dot + progress
       const epicTasks = allTasks.filter((t) => epicMatch(t.frontmatter.epic, epic.name));
@@ -222,8 +226,19 @@ export class KanbanView extends ItemView {
       e.dataTransfer?.setData("text/plain", task.file.path);
     });
     card.addEventListener("dragend", () => card.removeClass("is-dragging"));
-    card.addEventListener("click", () => {
-      new CardModal(this.app, this.service, { mode: "edit", card: task }, () => this.refresh()).open();
+    card.addEventListener("click", () => this.openFile(task.file));
+    card.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      const menu = new Menu();
+      menu.addItem((item) =>
+        item.setTitle("Open task").setIcon("file-text").onClick(() => this.openFile(task.file))
+      );
+      menu.addItem((item) =>
+        item.setTitle("Edit properties").setIcon("pencil").onClick(() => {
+          new CardModal(this.app, this.service, { mode: "edit", card: task }, () => this.refresh()).open();
+        })
+      );
+      menu.showAtMouseEvent(e);
     });
 
     // Priority left-border accent
@@ -283,6 +298,11 @@ export class KanbanView extends ItemView {
       row.createEl("span", { text: "⚠️", cls: "blocker-icon" });
       row.createEl("span", { text: names, cls: "blocker-list" });
     }
+  }
+
+  /** Opens the markdown file in a new tab, keeping the board tab in place. */
+  private openFile(file: TFile): void {
+    void this.app.workspace.getLeaf("tab").openFile(file);
   }
 
   private agentStatusIcon(status?: string): string {

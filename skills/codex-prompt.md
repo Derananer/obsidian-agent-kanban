@@ -13,13 +13,22 @@ Board root: `{BOARD_PATH}`
 {BOARD_PATH}/
 ├── epics/           ← epic definition files
 ├── 1-backlog/       ← available tasks
-├── 2-in-progress/   ← tasks being worked on
-├── 3-review/        ← tasks awaiting review
-└── 4-done/          ← completed tasks
+├── 2-in-progress/   ← tasks being worked on, or PR open awaiting merge
+├── 4-done/          ← completed tasks
+└── 5-canceled/      ← canceled tasks
 ```
 
 Columns are subfolders. Their order is determined by the numeric prefix.
 **Moving a task = moving its file to a different column folder.**
+
+## What a task is
+
+- A task is a **tangible increment of the epic** — when it is finished there is a result you can see, check or merge
+  (an endpoint works, a screen shows data, a push arrives). It is **not** a unit of subagent work and **not** a process phase.
+- No separate "analysis" / "review" / "implementation" tasks for the same thing — analysis, specs and plans live in docs and in the epic body.
+- At least one task per affected repository (different repos = different PRs = different increments).
+- For complex work the agent proposes the task breakdown (task → increment → repo → plan items it closes) in the spec, for approval together with it.
+- There is no review column: a task with an open PR stays in `2-in-progress` with `agent_status: idle`.
 
 ## Task file format
 
@@ -90,8 +99,8 @@ depends_on: [blocking-task-filename]
 1. READ    Scan backlog, find unassigned tasks matching your capabilities
 2. CLAIM   Set agent + agent_status: busy, move to 2-in-progress/
 3. WORK    Make changes in codebase, append notes to task file
-4. REVIEW  Move to 3-review/ if review is required
-5. DONE    Move to 4-done/, set agent_status: idle
+4. PR      Add PR link, set agent_status: idle, keep in 2-in-progress/
+5. DONE    Move to 4-done/ once merged, set agent_status: idle
 6. REPEAT  Return to step 1
 ```
 

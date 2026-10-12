@@ -129,6 +129,11 @@
   line-height: 1.2;
 }
 
+.epic-label-name:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .epic-label-meta {
   display: flex;
   align-items: center;
@@ -249,7 +254,7 @@
   border: 1px solid var(--background-modifier-border);
   border-radius: 6px;
   padding: 10px 12px;
-  cursor: grab;
+  cursor: pointer;
   position: relative;
   transition: box-shadow 0.15s, opacity 0.15s, border-color 0.15s;
 }

@@ -13,12 +13,21 @@
 │   ├── auth.md
 │   └── infrastructure.md
 ├── 1-backlog/         ← columns sorted by numeric prefix
-├── 2-in-progress/
-├── 3-review/
-└── 4-done/
+├── 2-in-progress/   ← agent working, or PR open awaiting merge
+├── 4-done/
+└── 5-canceled/
 ```
 
 **Moving a task between columns = renaming/moving the file to another folder.**
+
+## What a task is
+
+- A task is a **tangible increment of the epic** — when it is finished there is a result you can see, check or merge
+  (an endpoint works, a screen shows data, a push arrives). It is **not** a unit of subagent work and **not** a process phase.
+- No separate "analysis" / "review" / "implementation" tasks for the same thing — analysis, specs and plans live in docs and in the epic body.
+- At least one task per affected repository (different repos = different PRs = different increments).
+- For complex work the agent proposes the task breakdown (task → increment → repo → plan items it closes) in the spec, for approval together with it.
+- There is no review column: a task with an open PR stays in `2-in-progress` with `agent_status: idle`.
 
 ---
 
