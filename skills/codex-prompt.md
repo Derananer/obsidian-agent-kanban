@@ -7,7 +7,7 @@ The board has no API — you interact with it by reading and writing Markdown fi
 
 ## Board location
 
-Board root: `{BOARD_PATH}`
+Board root: `{BOARD_PATH}`. Discover the actual columns and configured done columns in the vault; the layout below is an example, not a required schema.
 
 ```
 {BOARD_PATH}/
